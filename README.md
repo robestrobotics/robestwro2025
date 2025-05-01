@@ -1,26 +1,32 @@
-Engineering materials
-====
+## System Overview
 
-This repository contains engineering materials of a self-driven vehicle's model participating in the WRO Future Engineers competition in the season 2022.
+This autonomous vehicle is designed using a **Raspberry Pi 4 Model B** as its main controller (SBC). It features a **DC motor** driven via an **L298N motor driver** module and uses a **camera module** for visual input. The robot uses **OpenCV** to detect **red and green colors** and navigates accordingly by adjusting the motor directions.
 
-## Content
+The power system is based on a **LiPo battery**, which provides energy for the whole system. A **step-down voltage regulator** is used to supply a stable 5V to the Raspberry Pi, ensuring reliable operation without voltage drops.
 
-* `t-photos` contains 2 photos of the team (an official one and one funny photo with all team members)
-* `v-photos` contains 6 photos of the vehicle (from every side, from top and bottom)
-* `video` contains the video.md file with the link to a video where driving demonstration exists
-* `schemes` contains one or several schematic diagrams in form of JPEG, PNG or PDF of the electromechanical components illustrating all the elements (electronic components and motors) used in the vehicle and how they connect to each other.
-* `src` contains code of control software for all components which were programmed to participate in the competition
-* `models` is for the files for models used by 3D printers, laser cutting machines and CNC machines to produce the vehicle elements. If there is nothing to add to this location, the directory can be removed.
-* `other` is for other files which can be used to understand how to prepare the vehicle for the competition. It may include documentation how to connect to a SBC/SBM and upload files there, datasets, hardware specifications, communication protocols descriptions etc. If there is nothing to add to this location, the directory can be removed.
+---
 
-## Introduction
+### 🔧 Key Components
 
-_This part must be filled by participants with the technical clarifications about the code: which modules the code consists of, how they are related to the electromechanical components of the vehicle, and what is the process to build/compile/upload the code to the vehicle’s controllers._
+- **Controller:** Raspberry Pi 4 Model B (SBC)
+- **Motor Driver:** L298N Dual H-Bridge
+- **Motors:** 2x DC Motors (Drive motors)
+- **Camera:** Pi Camera Module
+- **Software:** Python + OpenCV (for color detection)
+- **Power Source:** LiPo Battery
+- **Voltage Regulation:** Step-down Buck Converter (5V output)
 
-## How to prepare the repo based on the template
+---
 
-_Remove this section before the first commit to the repository_
+### 🧠 Functionality
 
-1. Clone this repo by using the `git clone` functionality.
-2. Remove `.git` directory
-3. [Initialize a new public repository on GitHub](https://github.com/new) by following instructions from "create a new repository on the command line" section (appeared after pressing "Create repository" button).
+- The camera continuously detects **red** and **green** traffic markers (as used in WRO Future Engineers challenge).
+- Upon detection:
+  - **Green** → Continue in the same direction.
+  - **Red** → Turn around and complete the third lap in reverse direction.
+- The robot runs **fully autonomously** after activation.
+- No wireless communication or manual control is used during the run (in accordance with WRO rules).
+
+---
+
+> ✅ This setup complies with the WRO 2025 "Future Engineers" category rules regarding autonomous behavior, component selection, and documentation requirements.
