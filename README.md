@@ -1,32 +1,58 @@
-## System Overview
+# 🤖 Smart Autonomous Robot
 
-This autonomous vehicle is designed using a **Raspberry Pi 4 Model B** as its main controller (SBC). It features a **DC motor** driven via an **L298N motor driver** module and uses a **camera module** for visual input. The robot uses **OpenCV** to detect **red and green colors** and navigates accordingly by adjusting the motor directions.
+A Raspberry Pi–powered prototype that combines sensor feedback, motor control, and real-time image processing for autonomous decision-making.
 
-The power system is based on a **LiPo battery**, which provides energy for the whole system. A **step-down voltage regulator** is used to supply a stable 5V to the Raspberry Pi, ensuring reliable operation without voltage drops.
+## 📚 Table of Contents
 
----
+* [Overview](#-overview)
+* [Hardware Components](#-hardware-components)
+* [Control and Processing](#-control-and-processing-raspberry-pi)
+* [Power Management](#-power-management)
+* [Software](#-software)
+* [Challenges and Solutions](#-challenges-and-solutions)
+* [Conclusion](#-conclusion)
 
-### 🔧 Key Components
+## 📌 Overview
 
-- **Controller:** Raspberry Pi 4 Model B (SBC)
-- **Motor Driver:** L298N Dual H-Bridge
-- **Motors:** 2x DC Motors (Drive motors)
-- **Camera:** Pi Camera Module
-- **Software:** Python + OpenCV (for color detection)
-- **Power Source:** LiPo Battery
-- **Voltage Regulation:** Step-down Buck Converter (5V output)
+Our robot is equipped with a **DC motor** for basic movement and an **MG90S micro servo motor** for steering control. These motors enable the robot to interact with its environment through different tasks. The entire system is managed by a **Raspberry Pi** microcomputer. To enhance environmental awareness, the robot utilizes an **HC-SR04 ultrasonic sensor** and a **ONEZERO Model 806 camera** for real-time image processing. With this combination, the robot can detect **red and green obstacles**, make decisions, and command its motors accordingly.
 
----
+## 🧰 Hardware Components
 
-### 🧠 Functionality
+### ⚙️ DC Motor and L298N Motor Driver
 
-- The camera continuously detects **red** and **green** traffic markers (as used in WRO Future Engineers challenge).
-- Upon detection:
-  - **Green** → Continue in the same direction.
-  - **Red** → Turn around and complete the third lap in reverse direction.
-- The robot runs **fully autonomously** after activation.
-- No wireless communication or manual control is used during the run (in accordance with WRO rules).
+The robot's movement system is powered by a **DC motor**, which is controlled via the **L298N motor driver**. This driver enables forward and backward motion with ease. Known for its high current capacity and dual H-bridge design, L298N is commonly used in robotics. A **12V LiPo battery** powers this module, ensuring stable energy delivery while reducing load on the Raspberry Pi.
 
----
+### 🔄 MG90S Micro Servo Motor
 
-> ✅ This setup complies with the WRO 2025 "Future Engineers" category rules regarding autonomous behavior, component selection, and documentation requirements.
+The **MG90S servo motor** manages the robot's steering. Compact and capable of rotating up to 180°, it is ideal for precise control. The **Raspberry Pi** controls the servo via **PWM signals**, where pulse width sets the motor's angle. Precise PWM generation is crucial for smooth operation.
+
+### 📏 HC-SR04 Ultrasonic Sensor
+
+To perceive its surroundings, the robot employs an **HC-SR04 ultrasonic sensor**. It calculates distance using echo time. A high TRIG signal sends out an ultrasonic pulse, which reflects off obstacles and returns to the ECHO pin. The round-trip time is used to compute distance—ideal for **obstacle avoidance** and **wall-following**.
+
+### 📸 ONEZERO Model 806 Camera Module
+
+For image processing, the **ONEZERO Model 806 camera** is used. Compatible with Raspberry Pi, this high-resolution camera enables **object detection**, **color tracking**, and **decision-making**. Visual data is processed using **Python** and **OpenCV**, empowering the robot to respond to visual cues.
+
+## 🧠 Control and Processing: Raspberry Pi
+
+All components are coordinated by the **Raspberry Pi**, offering powerful processing in a compact board. Its **GPIO pins** allow for flexible input/output setups, supporting **PWM**, **digital**, and other protocols. This enables unified motor and sensor control.
+
+## 🔋 Power Management
+
+Efficient energy distribution is vital. A **12V LiPo battery** powers the DC motor and L298N, protecting the Raspberry Pi. The **5V regulator** on L298N supports low-power components. The **servo motor** draws power from a separate supply, improving stability.
+
+## 💻 Software
+
+Development is done in **Python**. Scripts manage sensor data reading, servo control, and camera image processing. The robot can **react to nearby objects** and **track colors**. With machine learning, the system can evolve for **complex decision-making**.
+
+## 🚧 Challenges and Solutions
+
+During development, we tackled issues like **component communication**, **power interference**, and **sensor accuracy**:
+
+* Shared power caused servo jitter → resolved with a **separate voltage regulator**
+* Ultrasonic sensor placement and echoes affected accuracy → fixed with **optimized positioning**
+
+## ✅ Conclusion
+
+This robot system is a **functional prototype**, integrating hardware and responsive software. It can be extended with **LiDAR**, **advanced cameras**, and **wireless modules**, paving the way for **smart autonomous systems**.
