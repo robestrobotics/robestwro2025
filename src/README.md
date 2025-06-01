@@ -1,35 +1,78 @@
-# Autonomous Vehicle Control with Raspberry Pi and OpenCV
+# 🚗 Color and Distance-Based Robot Control
 
-This repository contains the essential Python modules used in our WRO 2025 Future Engineers project. The project integrates **real-time computer vision** with **GPIO-based motor control** to create an autonomous vehicle capable of recognizing traffic markers and navigating accordingly.
+This project is a Python-based robot control system using a Raspberry Pi, OpenCV, and basic GPIO interfacing to create a color-detecting and obstacle-avoiding autonomous vehicle.
 
-## 🧠 Project Structure
+## 📌 Project Summary
 
-### 1. `OpenCv+Cam_2.py`
-This script handles real-time **color detection** using the Raspberry Pi Camera and OpenCV. It converts each frame from BGR to HSV color space and applies color masking to detect **red** and **green** objects. Based on the amount of detected color area:
+The robot moves forward and reacts to color signals and obstacles in its environment:
 
-- If red is dominant, the system interprets a **"Stop or Turn"** signal.
-- If green is dominant, the system continues **moving forward**.
-- If no significant color is detected, the system displays `"RENK YOK"` on the screen.
+* **Red**: Turns right
+* **Green**: Turns left
+* **Obstacle within 50 cm**: Turns left to avoid
+* Otherwise: Moves forward for three successful turns
 
-> This module provides visual input to guide movement decisions based on WRO track signals.
+## 🧠 Technologies Used
 
-### 2. `MotorControl.py`
-This module defines a simple interface for motor commands via Raspberry Pi GPIO pins. It allows:
+* **Python 3**
+* **OpenCV** for image processing
+* **RPi.GPIO** for motor and sensor control
+* **Raspberry Pi Camera Module** or USB webcam
 
-- `ileri()` – Move forward  
-- `geri()` – Move backward  
-- `sag()` – Turn right  
-- `sol()` – Turn left  
-- `dur()` – Stop the motors
+## 🔧 Hardware Setup
 
-PWM control is implemented on the ENA and ENB pins to regulate motor speed.
+* **DC Motor** controlled via `IN1`, `IN2`, and `ENA` pins
+* **Ultrasonic Sensor** using `TRIG` (GPIO 5) and `ECHO` (GPIO 6)
+* **Raspberry Pi GPIO Pins**
 
-> The motor control logic is separated from the vision module for modularity and ease of debugging.
+## 🎯 Logic Overview
 
-## ⚙️ Hardware Compatibility
+1. **Video Capture**: Captures frames from the camera.
+2. **Color Detection**: Detects red and green objects in the frame using HSV color thresholds.
+3. **Ultrasonic Sensor**: Measures distance to obstacles.
+4. **Motion Control**: Uses direction logic based on color or distance.
 
-- Raspberry Pi 4 Model B
-- L298N Motor Driver
-- 2x DC Motors
-- LiPo Battery with 5V Buck Converter
-- Pi Camera Module
+## 📄 How It Works
+
+```python
+if red_area > 1000:
+    turn right, then go forward
+elif green_area > 1000:
+    turn left, then go forward
+elif distance <= 50:
+    avoid by turning left
+else:
+    go forward and increase counter
+```
+
+* Each successful forward movement increments a counter
+* Loop ends after 3 valid movements
+
+## 🚦 Motor Control Functions
+
+* `motor_ileri(hiz=70)`: Moves the robot forward
+* `motor_dur()`: Stops all motor movement
+* `motor_sola_don(hiz=60)`: Turns the robot left
+* `motor_saga_don(hiz=60)`: Turns the robot right
+
+## 📏 Distance Measurement
+
+The `mesafe_olc()` function uses ultrasonic TRIG and ECHO timing to calculate the distance in centimeters.
+
+## 🛑 Cleanup
+
+The system ensures clean GPIO state at the end:
+
+```python
+GPIO.cleanup()
+```
+
+## ⚠️ Safety Note
+
+Use on a safe surface; robot is not aware of height differences like stairs or edges.
+
+## 📦 Future Improvements
+
+* Add logging or telemetry
+* Implement more color types (blue, yellow, etc.)
+* Use PID for smoother motor control
+* Add real-time plotting or camera overlay
